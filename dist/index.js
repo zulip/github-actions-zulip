@@ -752,6 +752,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const allNumericRegex = /^[0-9]+$/
+
 async function run () {
   const username = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('username', { required: true })
   const apiKey = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('api-key', { required: false })
@@ -777,14 +779,19 @@ async function run () {
   if (type === 'private') {
     if (to) {
       to = to.split(',')
-      // QUESTION: do we need to convert user ids to integer?
+      const containsUserIds = to.every((item) => item.match(allNumericRegex))
+      if (containsUserIds) {
+        to = containsUserIds.map((item) => parseInt(item))
+      }
     }
   } else if (type === 'stream') {
     if (!topic) {
       Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)('topic is mandatory when type is "stream".')
       return
     }
-    // QUESTION: do we need to convert stream id to integer?
+    if (to.match(allNumericRegex)) {
+      to = parseInt(to)
+    }
   } else {
     Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)('type must be one of: private, stream.')
     return
@@ -801,7 +808,7 @@ async function run () {
     const response = await client.messages.send(params)
     if (response.result === 'success') {
       // OK!
-      Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.info)(`Message successfully send wiht id: ${response.id}`)
+      Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.info)(`Message successfully send with id: ${response.id}`)
     } else {
       Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.error)(new Error(`${response.code}: ${response.msg}`))
     }

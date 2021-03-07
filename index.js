@@ -1,6 +1,8 @@
 import { error, getInput, info, setFailed } from '@actions/core'
 import zulipInit from 'zulip-js'
 
+const allNumericRegex = /^[0-9]+$/
+
 async function run () {
   const username = getInput('username', { required: true })
   const apiKey = getInput('api-key', { required: false })
@@ -26,14 +28,19 @@ async function run () {
   if (type === 'private') {
     if (to) {
       to = to.split(',')
-      // QUESTION: do we need to convert user ids to integer?
+      const containsUserIds = to.every((item) => item.match(allNumericRegex))
+      if (containsUserIds) {
+        to = containsUserIds.map((item) => parseInt(item))
+      }
     }
   } else if (type === 'stream') {
     if (!topic) {
       setFailed('topic is mandatory when type is "stream".')
       return
     }
-    // QUESTION: do we need to convert stream id to integer?
+    if (to.match(allNumericRegex)) {
+      to = parseInt(to)
+    }
   } else {
     setFailed('type must be one of: private, stream.')
     return
@@ -50,7 +57,7 @@ async function run () {
     const response = await client.messages.send(params)
     if (response.result === 'success') {
       // OK!
-      info(`Message successfully send wiht id: ${response.id}`)
+      info(`Message successfully send with id: ${response.id}`)
     } else {
       error(new Error(`${response.code}: ${response.msg}`))
     }
