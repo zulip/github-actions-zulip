@@ -61,5 +61,6 @@ jobs:
           to: '282093'
           type: 'private'
           content: 'With mirth and laughter let old wrinkles come.'
+        if: always()
 
 
