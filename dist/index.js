@@ -781,7 +781,7 @@ async function run () {
       to = to.split(',')
       const containsUserIds = to.every((item) => item.match(allNumericRegex))
       if (containsUserIds) {
-        to = containsUserIds.map((item) => parseInt(item))
+        to = to.map((item) => parseInt(item))
       }
     }
   } else if (type === 'stream') {
