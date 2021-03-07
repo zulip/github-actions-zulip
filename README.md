@@ -1,5 +1,7 @@
 # Zulip Send Message Action
 
+[![GitHub Action badge](https://github.com/yuzutech/zulip-send-message-action/workflows/test-local/badge.svg)](https://github.com/yuzutech/zulip-send-message-action/actions?query=workflow%3Atest-local)
+
 This action sends a message to Zulip.
 
 ## Inputs
