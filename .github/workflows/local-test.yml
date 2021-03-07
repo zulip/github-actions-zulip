@@ -17,7 +17,7 @@ jobs:
         with:
           username: 'ggrossetie@yuzutech.fr'
           api-key: ${{ secrets.ZULIP_API_KEY }}
-          organization-url: 'https://org.zulipchat.com'
+          organization-url: 'https://kroki.zulipchat.com'
           to: 'test'
           type: 'stream'
           topic: 'github actions'
