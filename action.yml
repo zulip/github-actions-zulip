@@ -1,4 +1,4 @@
-name: 'Annotate Action'
+name: 'Zulip Send Message Action'
 branding:
   icon: 'mail'
   color: 'gray-dark'
@@ -18,7 +18,7 @@ inputs:
     description: 'Zulip organization canonical URL.'
     required: true
   to:
-    description: 'For stream messages, either the name or integer ID of the stream. For private messages, either a list containing integer user IDs or a list containing string email addresses.'
+    description: 'For stream messages, either the name or integer ID of the stream. For private messages, either a list containing integer user IDs or a list containing string email addresses (separated by comma).'
     required: true
   type:
     description: 'The type of message to be sent. private for a private message and stream for a stream message. Must be one of: private, stream.'

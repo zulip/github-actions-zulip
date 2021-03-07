@@ -6,7 +6,7 @@ async function run () {
   const apiKey = getInput('api-key', { required: false })
   const password = getInput('password', { required: false })
   const realm = getInput('organization-url', { required: true })
-  const to = getInput('to', { required: true })
+  let to = getInput('to', { required: true })
   const type = getInput('type', { required: true })
   const topic = getInput('topic', { required: false })
   const content = getInput('content', { required: true })
@@ -21,6 +21,21 @@ async function run () {
     Object.assign(config, initialConfig, { password })
   } else {
     setFailed('api-key or password is mandatory in order to interact with the Zulip API.')
+    return
+  }
+  if (type === 'private') {
+    if (to) {
+      to = to.split(',')
+      // QUESTION: do we need to convert user ids to integer?
+    }
+  } else if (type === 'stream') {
+    if (!topic) {
+      setFailed('topic is mandatory when type is "stream".')
+      return
+    }
+    // QUESTION: do we need to convert stream id to integer?
+  } else {
+    setFailed('type must be one of: private, stream.')
     return
   }
   try {
