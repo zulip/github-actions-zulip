@@ -757,7 +757,7 @@ async function run () {
   const apiKey = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('api-key', { required: false })
   const password = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('password', { required: false })
   const realm = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('organization-url', { required: true })
-  const to = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('to', { required: true })
+  let to = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('to', { required: true })
   const type = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('type', { required: true })
   const topic = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('topic', { required: false })
   const content = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('content', { required: true })
@@ -772,6 +772,21 @@ async function run () {
     Object.assign(config, initialConfig, { password })
   } else {
     Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)('api-key or password is mandatory in order to interact with the Zulip API.')
+    return
+  }
+  if (type === 'private') {
+    if (to) {
+      to = to.split(',')
+      // QUESTION: do we need to convert user ids to integer?
+    }
+  } else if (type === 'stream') {
+    if (!topic) {
+      Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)('topic is mandatory when type is "stream".')
+      return
+    }
+    // QUESTION: do we need to convert stream id to integer?
+  } else {
+    Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)('type must be one of: private, stream.')
     return
   }
   try {
