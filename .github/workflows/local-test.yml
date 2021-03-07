@@ -31,6 +31,35 @@ jobs:
           to: '282093'
           type: 'private'
           content: 'With mirth and laughter let old wrinkles come.'
-
+  failure:
+    continue-on-error: true
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - name: Testing / Linting
+        run: npm run test
+      - name: Package
+        run: npm run package
+      - name: "Check that packaging didn't create any changes"
+        run: '[ -z "$(git status --porcelain)" ];'
+      - name: Missing API key and password
+        uses: ./
+        with:
+          username: 'ggrossetie@yuzutech.fr'
+          organization-url: 'https://kroki.zulipchat.com'
+          to: 'test'
+          type: 'stream'
+          topic: 'github actions'
+          content: 'I come not, friends, to steal away your hearts.'
+      - name: Wrong organization URL
+        uses: ./
+        with:
+          username: 'ggrossetie@yuzutech.fr'
+          api-key: ${{ secrets.ZULIP_API_KEY }}
+          organization-url: 'https://org.zulipchat.com'
+          to: '282093'
+          type: 'private'
+          content: 'With mirth and laughter let old wrinkles come.'
 
 

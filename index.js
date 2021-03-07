@@ -66,4 +66,6 @@ async function run () {
   }
 }
 
-run()
+;(async () => {
+  await run()
+})()
