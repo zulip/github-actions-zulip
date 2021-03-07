@@ -59,7 +59,8 @@ async function run () {
       // OK!
       info(`Message successfully send with id: ${response.id}`)
     } else {
-      error(new Error(`${response.code}: ${response.msg}`))
+      const errorMessage = response.code ? `${response.code}: ${response.msg}` : response.msg
+      setFailed(new Error(errorMessage))
     }
   } catch (error) {
     setFailed(error)

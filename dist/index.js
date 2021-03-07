@@ -810,7 +810,8 @@ async function run () {
       // OK!
       Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.info)(`Message successfully send with id: ${response.id}`)
     } else {
-      Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.error)(new Error(`${response.code}: ${response.msg}`))
+      const errorMessage = response.code ? `${response.code}: ${response.msg}` : response.msg
+      Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(new Error(errorMessage))
     }
   } catch (error) {
     Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error)
