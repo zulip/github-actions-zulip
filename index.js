@@ -1,4 +1,4 @@
-import { error, getInput, info, setFailed } from '@actions/core'
+import { getInput, info, setFailed } from '@actions/core'
 import zulipInit from 'zulip-js'
 
 const allNumericRegex = /^[0-9]+$/
