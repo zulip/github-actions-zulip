@@ -1,0 +1,40 @@
+{
+  "name": "@yuzutech/zulip-send-message-action",
+  "version": "0.1.0",
+  "description": "GitHub action that sends a message to Zulip",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard index.js",
+    "package": "ncc build index.js -o dist",
+    "test": "npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuzutech/zulip-send-message-action.git"
+  },
+  "keywords": [
+    "GitHub",
+    "Actions",
+    "JavaScript",
+    "Zulip"
+  ],
+  "author": "Yuzu tech (https://www.yuzutech.fr)",
+  "contributors": [
+    "Guillaume Grossetie <ggrossetie@yuzutech.fr>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yuzutech/zulip-send-message-action/issues"
+  },
+  "homepage": "https://github.com/yuzutech/zulip-send-message-action#readme",
+  "dependencies": {
+    "@actions/core": "1.2.6",
+    "@actions/github": "4.0.0",
+    "zulip-js": "^2.0.9"
+  },
+  "devDependencies": {
+    "@zeit/ncc": "0.22.3",
+    "eslint": "^7.17.0",
+    "standard": "^16.0.3"
+  }
+}

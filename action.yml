@@ -1,0 +1,34 @@
+name: 'Annotate Action'
+branding:
+  icon: 'mail'
+  color: 'gray-dark'
+author: 'Guillaume Grossetie'
+description: 'Sends a message to Zulip'
+inputs:
+  username:
+    description: 'Username used to interact with the Zulip API.'
+    required: true
+  api-key:
+    description: 'API key used to interact with the Zulip API. Only required if password is not defined.'
+    required: false
+  password:
+    description: 'Password used to interact with the Zulip API. Only required if api-key is not defined, ignored otherwise.'
+    required: false
+  organization-url:
+    description: 'Zulip organization canonical URL.'
+    required: true
+  to:
+    description: 'For stream messages, either the name or integer ID of the stream. For private messages, either a list containing integer user IDs or a list containing string email addresses.'
+    required: true
+  type:
+    description: 'The type of message to be sent. private for a private message and stream for a stream message. Must be one of: private, stream.'
+    required: true
+  topic:
+    description: 'The topic of the message. Only required for stream messages (type="stream"), ignored otherwise. Maximum length of 60 characters.'
+    required: false
+  content:
+    description: 'The content of the message. Maximum message size of 10000 bytes.'
+    required: true
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
