@@ -43,7 +43,7 @@ This action sends a message to Zulip.
 **Send a stream message**
 ```yml
 - name: Send a stream message
-  uses: yuzutech/zulip-send-message-action@main
+  uses: yuzutech/zulip-send-message-action@v0.10
   with:
     username: 'username@example.com'
     api-key: 'abcd1234'
@@ -57,7 +57,7 @@ This action sends a message to Zulip.
 **Send a private message**
 ```yml
 - name: Send a private message
-  uses: yuzutech/zulip-send-message-action@main
+  uses: yuzutech/zulip-send-message-action@v0.10
   with:
     username: 'username@example.com'
     api-key: 'abcd1234'
