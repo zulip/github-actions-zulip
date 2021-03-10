@@ -15,7 +15,7 @@ jobs:
       - name: "Check that packaging didn't create any changes"
         run: '[ -z "$(git status --porcelain)" ];'
       - name: Set release message
-        run: echo "RELEASE_MESSAGE=zulip-send-message-action ${GITHUB_REF#refs/*/} is out\!\nhttps://github.com/yuzutech/zulip-send-message-action/releases/tag/${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: Send a stream message
         uses: ./
         with:
@@ -25,6 +25,9 @@ jobs:
           to: 'test'
           type: 'stream'
           topic: 'releases'
-          content: ${{ env.RELEASE_MESSAGE  }}
+          content: |
+            zulip-send-message-action ${{ env.RELEASE_VERSION }} is out!
+
+            https://github.com/yuzutech/zulip-send-message-action/releases/tag/${{ env.RELEASE_VERSION }}
 
 
