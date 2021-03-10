@@ -1,0 +1,30 @@
+name: "release"
+on:
+  push:
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v2.1.3
+jobs:
+  announcement:
+    continue-on-error: true
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - name: Package
+        run: npm run package
+      - name: "Check that packaging didn't create any changes"
+        run: '[ -z "$(git status --porcelain)" ];'
+      - name: Set release message
+        run: echo "RELEASE_MESSAGE=zulip-send-message-action ${GITHUB_REF#refs/*/} is out\!\nhttps://github.com/yuzutech/zulip-send-message-action/releases/tag/${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Send a stream message
+        uses: ./
+        with:
+          username: 'ggrossetie@yuzutech.fr'
+          api-key: ${{ secrets.ZULIP_API_KEY }}
+          organization-url: 'https://kroki.zulipchat.com'
+          to: 'test'
+          type: 'stream'
+          topic: 'releases'
+          content: ${{ env.RELEASE_MESSAGE  }}
+
+
