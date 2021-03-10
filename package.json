@@ -1,6 +1,6 @@
 {
   "name": "@yuzutech/zulip-send-message-action",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "GitHub action that sends a message to Zulip",
   "main": "index.js",
   "scripts": {
