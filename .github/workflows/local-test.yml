@@ -1,5 +1,11 @@
 name: "test-local"
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '*'
 jobs:
   test:
     runs-on: ubuntu-20.04
@@ -33,7 +39,6 @@ jobs:
           type: 'private'
           content: 'With mirth and laughter let old wrinkles come.'
   failure:
-    continue-on-error: true
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -65,4 +70,3 @@ jobs:
           type: 'private'
           content: 'With mirth and laughter let old wrinkles come.'
         continue-on-error: true
-        if: always()
