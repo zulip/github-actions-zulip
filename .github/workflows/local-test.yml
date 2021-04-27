@@ -11,6 +11,7 @@ jobs:
       - name: Package
         run: npm run package
       - name: "Check that packaging didn't create any changes"
+        if: ${{ github.event.pull_request.user.login != 'dependabot' }}
         run: '[ -z "$(git status --porcelain)" ];'
       - name: Send a stream message
         uses: ./
@@ -42,6 +43,7 @@ jobs:
       - name: Package
         run: npm run package
       - name: "Check that packaging didn't create any changes"
+        if: ${{ github.event.pull_request.user.login != 'dependabot' }}
         run: '[ -z "$(git status --porcelain)" ];'
       - name: Missing API key and password
         uses: ./
