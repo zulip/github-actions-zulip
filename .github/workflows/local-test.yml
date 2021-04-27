@@ -54,6 +54,7 @@ jobs:
           type: 'stream'
           topic: 'github actions'
           content: 'I come not, friends, to steal away your hearts.'
+        continue-on-error: true
       - name: Wrong organization URL
         uses: ./
         with:
@@ -63,4 +64,5 @@ jobs:
           to: '282093'
           type: 'private'
           content: 'With mirth and laughter let old wrinkles come.'
+        continue-on-error: true
         if: always()
