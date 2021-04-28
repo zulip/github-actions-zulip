@@ -16,9 +16,6 @@ jobs:
         run: npm run test
       - name: Package
         run: npm run package
-      - name: "Check that packaging didn't create any changes"
-        if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
-        run: '[ -z "$(git status --porcelain)" ];'
       - name: Check whether integrations tests should be enabled
         id: enable_integration_tests
         env:
@@ -55,9 +52,6 @@ jobs:
         run: npm run test
       - name: Package
         run: npm run package
-      - name: "Check that packaging didn't create any changes"
-        if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
-        run: '[ -z "$(git status --porcelain)" ];'
       - name: Missing API key and password
         uses: ./
         with:
