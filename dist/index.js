@@ -755,25 +755,22 @@ __webpack_require__.r(__webpack_exports__);
 const allNumericRegex = /^[0-9]+$/
 
 async function run () {
-  const username = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('username', { required: true })
-  const apiKey = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('api-key', { required: false })
-  const password = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('password', { required: false })
+  const email = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('email', { required: true })
+  const apiKey = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('api-key', { required: true })
   const realm = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('organization-url', { required: true })
   let to = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('to', { required: true })
   const type = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('type', { required: true })
   const topic = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('topic', { required: false })
   const content = Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('content', { required: true })
   const initialConfig = {
-    username,
+    username: email,
     realm
   }
   const config = {}
   if (apiKey) {
     Object.assign(config, initialConfig, { apiKey })
-  } else if (password) {
-    Object.assign(config, initialConfig, { password })
   } else {
-    Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)('api-key or password is mandatory in order to interact with the Zulip API.')
+    Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)('api-key is mandatory in order to interact with the Zulip API.')
     return
   }
   if (type === 'private') {
@@ -3497,6 +3494,7 @@ exports.getInput = getInput;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setOutput(name, value) {
+    process.stdout.write(os.EOL);
     command_1.issueCommand('set-output', { name }, value);
 }
 exports.setOutput = setOutput;

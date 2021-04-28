@@ -1,22 +1,18 @@
 # Zulip Send Message Action
 
-[![GitHub Action badge](https://github.com/yuzutech/zulip-send-message-action/workflows/test-local/badge.svg)](https://github.com/yuzutech/zulip-send-message-action/actions?query=workflow%3Atest-local)
+[![GitHub Action badge](https://github.com/zulip/github-actions-zulip/workflows/test-local/badge.svg)](https://github.com/zulip/github-actions-zulip/actions?query=workflow%3Atest-local)
 
-This action sends a message to Zulip.
+This action sends a message to [Zulip](https://zulip.com/).
 
 ## Inputs
 
-### `username`
-
-**Required** Username used to interact with the Zulip API.
-
 ### `api-key`
 
-**Optional** API key used to interact with the Zulip API. Only required if password is not defined.
+**Required** [API key](https://zulip.com/api/api-keys) used to interact with the Zulip API. You can get an API key through Zulip's web interface.
 
-### `password`
+### `email`
 
-**Optional** Password used to interact with the Zulip API. Only required if api-key is not defined, ignored otherwise.
+**Required** Email address of the user who owns the API key mentioned above.
 
 ### `organization-url`
 
@@ -24,15 +20,18 @@ This action sends a message to Zulip.
 
 ### `to`
 
-**Required** For stream messages, either the name or integer ID of the stream. For private messages, either a list containing integer user IDs or a list containing string email addresses.
+**Required** For stream messages, either the name or integer ID of the stream.
+For private messages, either a list containing integer user IDs or a list containing string email addresses.
 
 ### `type`
 
-**Required** The type of message to be sent. private for a private message and stream for a stream message. Must be one of: private, stream.
+**Required** The type of message to be sent. `private` for a private message and `stream` for a stream message.
+Must be one of: `private`, `stream`.
 
 ### `topic`
 
-**Optional** The topic of the message. Only required for stream messages (type="stream"), ignored otherwise. Maximum length of 60 characters.
+**Optional** The topic of the message. Only required for stream messages (`type="stream"`), ignored otherwise.
+Maximum length of 60 characters.
 
 ### `content`
 
@@ -43,10 +42,10 @@ This action sends a message to Zulip.
 **Send a stream message**
 ```yml
 - name: Send a stream message
-  uses: yuzutech/zulip-send-message-action@v0.1.0
+  uses: zulip/github-actions-zulip@v0.2.0
   with:
-    username: 'username@example.com'
     api-key: 'abcd1234'
+    email: 'username@example.com'
     organization-url: 'https://org.zulipchat.com'
     to: 'social'
     type: 'stream'
@@ -57,10 +56,10 @@ This action sends a message to Zulip.
 **Send a private message**
 ```yml
 - name: Send a private message
-  uses: yuzutech/zulip-send-message-action@v0.1.0
+  uses: zulip/github-actions-zulip@v0.2.0
   with:
-    username: 'username@example.com'
     api-key: 'abcd1234'
+    email: 'username@example.com'
     organization-url: 'https://org.zulipchat.com'
     to: '9' # user_id
     type: 'private'
