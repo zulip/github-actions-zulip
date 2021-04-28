@@ -1,5 +1,11 @@
 name: "test-local"
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '*'
 jobs:
   test:
     runs-on: ubuntu-20.04
@@ -11,6 +17,7 @@ jobs:
       - name: Package
         run: npm run package
       - name: "Check that packaging didn't create any changes"
+        if: ${{ github.event.pull_request.user.login != 'dependabot' }}
         run: '[ -z "$(git status --porcelain)" ];'
       - name: Send a stream message
         uses: ./
@@ -32,7 +39,6 @@ jobs:
           type: 'private'
           content: 'With mirth and laughter let old wrinkles come.'
   failure:
-    continue-on-error: true
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -42,6 +48,7 @@ jobs:
       - name: Package
         run: npm run package
       - name: "Check that packaging didn't create any changes"
+        if: ${{ github.event.pull_request.user.login != 'dependabot' }}
         run: '[ -z "$(git status --porcelain)" ];'
       - name: Missing API key and password
         uses: ./
@@ -52,6 +59,7 @@ jobs:
           type: 'stream'
           topic: 'github actions'
           content: 'I come not, friends, to steal away your hearts.'
+        continue-on-error: true
       - name: Wrong organization URL
         uses: ./
         with:
@@ -61,4 +69,4 @@ jobs:
           to: '282093'
           type: 'private'
           content: 'With mirth and laughter let old wrinkles come.'
-        if: always()
+        continue-on-error: true
