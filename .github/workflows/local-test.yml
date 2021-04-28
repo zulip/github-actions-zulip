@@ -29,6 +29,7 @@ jobs:
           type: 'stream'
           topic: 'github actions'
           content: 'I come not, friends, to steal away your hearts.'
+        if: ${{ secrets.ZULIP_API_KEY != '' }}
       - name: Send a private message
         uses: ./
         with:
@@ -38,6 +39,7 @@ jobs:
           to: '282093'
           type: 'private'
           content: 'With mirth and laughter let old wrinkles come.'
+        if: ${{ secrets.ZULIP_API_KEY != '' }}
   failure:
     runs-on: ubuntu-20.04
     steps:

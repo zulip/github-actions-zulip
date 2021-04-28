@@ -29,5 +29,4 @@ jobs:
             zulip-send-message-action ${{ env.RELEASE_VERSION }} is out!
 
             https://github.com/yuzutech/zulip-send-message-action/releases/tag/${{ env.RELEASE_VERSION }}
-
-
+        if: ${{ secrets.ZULIP_API_KEY != '' }}
