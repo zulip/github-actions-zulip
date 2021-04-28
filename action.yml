@@ -5,15 +5,12 @@ branding:
 author: 'Guillaume Grossetie'
 description: 'Sends a message to Zulip'
 inputs:
-  username:
-    description: 'Username used to interact with the Zulip API.'
-    required: true
   api-key:
-    description: 'API key used to interact with the Zulip API. Only required if password is not defined.'
-    required: false
-  password:
-    description: 'Password used to interact with the Zulip API. Only required if api-key is not defined, ignored otherwise.'
-    required: false
+    description: 'API key used to interact with the Zulip API. You can get an API key through Zulip''s web interface.'
+    required: true
+  email:
+    description: 'Email address of the user who owns the API key mentioned above.'
+    required: true
   organization-url:
     description: 'Zulip organization canonical URL.'
     required: true

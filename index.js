@@ -4,25 +4,22 @@ import zulipInit from 'zulip-js'
 const allNumericRegex = /^[0-9]+$/
 
 async function run () {
-  const username = getInput('username', { required: true })
-  const apiKey = getInput('api-key', { required: false })
-  const password = getInput('password', { required: false })
+  const email = getInput('email', { required: true })
+  const apiKey = getInput('api-key', { required: true })
   const realm = getInput('organization-url', { required: true })
   let to = getInput('to', { required: true })
   const type = getInput('type', { required: true })
   const topic = getInput('topic', { required: false })
   const content = getInput('content', { required: true })
   const initialConfig = {
-    username,
+    username: email,
     realm
   }
   const config = {}
   if (apiKey) {
     Object.assign(config, initialConfig, { apiKey })
-  } else if (password) {
-    Object.assign(config, initialConfig, { password })
   } else {
-    setFailed('api-key or password is mandatory in order to interact with the Zulip API.')
+    setFailed('api-key is mandatory in order to interact with the Zulip API.')
     return
   }
   if (type === 'private') {
