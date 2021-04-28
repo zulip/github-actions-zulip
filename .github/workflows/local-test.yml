@@ -19,6 +19,12 @@ jobs:
       - name: "Check that packaging didn't create any changes"
         if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
         run: '[ -z "$(git status --porcelain)" ];'
+      - name: Check whether integrations tests should be enabled
+        id: enable_integration_tests
+        env:
+          ZULIP_API_KEY: ${{ secrets.ZULIP_API_KEY }}
+        run: |
+          echo "::set-output name=value::${{ env.ZULIP_API_KEY != '' }}"
       - name: Send a stream message
         uses: ./
         with:
@@ -29,6 +35,7 @@ jobs:
           type: 'stream'
           topic: 'github actions'
           content: 'I come not, friends, to steal away your hearts.'
+        if: ${{ steps.enable_integration_tests.outputs.value == 'true' }}
       - name: Send a private message
         uses: ./
         with:
@@ -38,6 +45,7 @@ jobs:
           to: '282093'
           type: 'private'
           content: 'With mirth and laughter let old wrinkles come.'
+        if: ${{ steps.enable_integration_tests.outputs.value == 'true' }}
   failure:
     runs-on: ubuntu-20.04
     steps:

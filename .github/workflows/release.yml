@@ -16,6 +16,12 @@ jobs:
         run: '[ -z "$(git status --porcelain)" ];'
       - name: Set release message
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Check whether we should send release annoucement
+        id: enable_release_annoucement
+        env:
+          ZULIP_API_KEY: ${{ secrets.ZULIP_API_KEY }}
+        run: |
+          echo "::set-output name=value::${{ env.ZULIP_API_KEY != '' }}"
       - name: Send a stream message
         uses: ./
         with:
@@ -29,5 +35,4 @@ jobs:
             zulip-send-message-action ${{ env.RELEASE_VERSION }} is out!
 
             https://github.com/yuzutech/zulip-send-message-action/releases/tag/${{ env.RELEASE_VERSION }}
-
-
+        if: ${{ steps.enable_release_annoucement.outputs.value == 'true' }}
