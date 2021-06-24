@@ -36,6 +36,7 @@ Maximum length of 60 characters.
 ### `content`
 
 **Required** The content of the message. Maximum message size of 10000 bytes.
+Accept [GitHub Flavored Markdown](https://zulip.com/help/format-your-message-using-markdown) syntax.
 
 ## Example usage
 
