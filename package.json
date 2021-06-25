@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/yuzutech/zulip-send-message-action#readme",
   "dependencies": {
-    "@actions/core": "1.2.7",
+    "@actions/core": "1.4.0",
     "@actions/github": "5.0.0",
     "zulip-js": "^2.0.9"
   },
