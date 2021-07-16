@@ -65,5 +65,9 @@ async function run () {
 }
 
 ;(async () => {
-  await run()
+  try {
+    await run()
+  } catch (error) {
+    setFailed(error)
+  }
 })()

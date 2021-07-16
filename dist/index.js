@@ -830,7 +830,11 @@ async function run () {
 }
 
 ;(async () => {
-  await run()
+  try {
+    await run()
+  } catch (error) {
+    Object(_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error)
+  }
 })()
 
 
