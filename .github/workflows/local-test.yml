@@ -25,9 +25,9 @@ jobs:
       - name: Send a stream message
         uses: ./
         with:
-          username: 'ggrossetie@yuzutech.fr'
+          username: 'it-bot@github-actions-test.zulipchat.com'
           api-key: ${{ secrets.ZULIP_API_KEY }}
-          organization-url: 'https://kroki.zulipchat.com'
+          organization-url: 'https://github-actions-test.zulipchat.com'
           to: 'test'
           type: 'stream'
           topic: 'github actions'
@@ -36,10 +36,10 @@ jobs:
       - name: Send a private message
         uses: ./
         with:
-          username: 'ggrossetie@yuzutech.fr'
+          username: 'it-bot@github-actions-test.zulipchat.com'
           api-key: ${{ secrets.ZULIP_API_KEY }}
-          organization-url: 'https://kroki.zulipchat.com'
-          to: '282093'
+          organization-url: 'https://github-actions-test.zulipchat.com'
+          to: '423060'
           type: 'private'
           content: 'With mirth and laughter let old wrinkles come.'
         if: ${{ steps.enable_integration_tests.outputs.value == 'true' }}
@@ -55,8 +55,8 @@ jobs:
       - name: Missing API key and password
         uses: ./
         with:
-          username: 'ggrossetie@yuzutech.fr'
-          organization-url: 'https://kroki.zulipchat.com'
+          username: 'it-bot@github-actions-test.zulipchat.com'
+          organization-url: 'https://github-actions-test.zulipchat.com'
           to: 'test'
           type: 'stream'
           topic: 'github actions'
@@ -65,7 +65,7 @@ jobs:
       - name: Wrong organization URL
         uses: ./
         with:
-          username: 'ggrossetie@yuzutech.fr'
+          username: 'it-bot@github-actions-test.zulipchat.com'
           api-key: ${{ secrets.ZULIP_API_KEY }}
           organization-url: 'https://org.zulipchat.com'
           to: '282093'
