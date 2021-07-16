@@ -25,7 +25,7 @@ jobs:
       - name: Send a stream message
         uses: ./
         with:
-          username: 'it-bot@github-actions-test.zulipchat.com'
+          email: 'it-bot@github-actions-test.zulipchat.com'
           api-key: ${{ secrets.ZULIP_API_KEY }}
           organization-url: 'https://github-actions-test.zulipchat.com'
           to: 'test'
@@ -36,7 +36,7 @@ jobs:
       - name: Send a private message
         uses: ./
         with:
-          username: 'it-bot@github-actions-test.zulipchat.com'
+          email: 'it-bot@github-actions-test.zulipchat.com'
           api-key: ${{ secrets.ZULIP_API_KEY }}
           organization-url: 'https://github-actions-test.zulipchat.com'
           to: '423060'
@@ -55,7 +55,7 @@ jobs:
       - name: Missing API key and password
         uses: ./
         with:
-          username: 'it-bot@github-actions-test.zulipchat.com'
+          email: 'it-bot@github-actions-test.zulipchat.com'
           organization-url: 'https://github-actions-test.zulipchat.com'
           to: 'test'
           type: 'stream'
@@ -65,7 +65,7 @@ jobs:
       - name: Wrong organization URL
         uses: ./
         with:
-          username: 'it-bot@github-actions-test.zulipchat.com'
+          email: 'it-bot@github-actions-test.zulipchat.com'
           api-key: ${{ secrets.ZULIP_API_KEY }}
           organization-url: 'https://org.zulipchat.com'
           to: '282093'
