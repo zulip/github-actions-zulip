@@ -41,7 +41,7 @@ Format your message using [Zulip Markdown](https://zulip.com/help/format-your-me
 **Send a stream message**
 ```yml
 - name: Send a stream message
-  uses: zulip/github-actions-zulip/send-message@v1.0
+  uses: zulip/github-actions-zulip/send-message@v1
   with:
     api-key: 'abcd1234'
     email: 'username@example.com'
@@ -55,7 +55,7 @@ Format your message using [Zulip Markdown](https://zulip.com/help/format-your-me
 **Send a private message**
 ```yml
 - name: Send a private message
-  uses: zulip/github-actions-zulip/send-message@v1.0
+  uses: zulip/github-actions-zulip/send-message@v1
   with:
     api-key: 'abcd1234'
     email: 'username@example.com'
