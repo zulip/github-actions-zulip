@@ -23,7 +23,7 @@ jobs:
         run: |
           echo "::set-output name=value::${{ env.ZULIP_API_KEY != '' }}"
       - name: Send a stream message
-        uses: ./
+        uses: ./send-message
         with:
           email: 'it-bot@github-actions-test.zulipchat.com'
           api-key: ${{ secrets.ZULIP_API_KEY }}
@@ -34,7 +34,7 @@ jobs:
           content: 'I come not, friends, to steal away your hearts.'
         if: ${{ steps.enable_integration_tests.outputs.value == 'true' }}
       - name: Send a private message
-        uses: ./
+        uses: ./send-message
         with:
           email: 'it-bot@github-actions-test.zulipchat.com'
           api-key: ${{ secrets.ZULIP_API_KEY }}
@@ -53,7 +53,7 @@ jobs:
       - name: Package
         run: npm run package
       - name: Missing API key and password
-        uses: ./
+        uses: ./send-message
         with:
           email: 'it-bot@github-actions-test.zulipchat.com'
           organization-url: 'https://github-actions-test.zulipchat.com'
@@ -63,7 +63,7 @@ jobs:
           content: 'I come not, friends, to steal away your hearts.'
         continue-on-error: true
       - name: Wrong organization URL
-        uses: ./
+        uses: ./send-message
         with:
           email: 'it-bot@github-actions-test.zulipchat.com'
           api-key: ${{ secrets.ZULIP_API_KEY }}
