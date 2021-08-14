@@ -52,7 +52,7 @@ _After_
 
 - Bump `@actions/core` from 1.2.6 to 1.4.0
 - Bump `@actions/github` from 4.0.0 to 5.0.0
-- Bump `eslint` from 7.21.0 to 7.30.0
+- Bump `eslint` from 7.21.0 to 7.32.0
 - Use a bot account for integration tests
 
 **Documentation**
