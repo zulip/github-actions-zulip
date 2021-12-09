@@ -7,6 +7,7 @@ This action sends a message to [Zulip](https://zulip.com/).
 ### `api-key`
 
 **Required** [API key](https://zulip.com/api/api-keys) used to interact with the Zulip API. You can get an API key through Zulip's web interface.
+You should store the API key [as a secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository).
 
 ### `email`
 
@@ -43,7 +44,7 @@ Format your message using [Zulip Markdown](https://zulip.com/help/format-your-me
 - name: Send a stream message
   uses: zulip/github-actions-zulip/send-message@v1
   with:
-    api-key: 'abcd1234'
+    api-key: ${{ secrets.ZULIP_API_KEY }}
     email: 'username@example.com'
     organization-url: 'https://org.zulipchat.com'
     to: 'social'
@@ -57,7 +58,7 @@ Format your message using [Zulip Markdown](https://zulip.com/help/format-your-me
 - name: Send a private message
   uses: zulip/github-actions-zulip/send-message@v1
   with:
-    api-key: 'abcd1234'
+    api-key: ${{ secrets.ZULIP_API_KEY }}
     email: 'username@example.com'
     organization-url: 'https://org.zulipchat.com'
     to: '9' # user_id
