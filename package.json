@@ -33,7 +33,7 @@
     "zulip-js": "^2.0.9"
   },
   "devDependencies": {
-    "@vercel/ncc": "0.28.6",
+    "@vercel/ncc": "0.33.4",
     "eslint": "^7.32.0",
     "standard": "^16.0.3"
   }
