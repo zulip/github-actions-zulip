@@ -28,8 +28,14 @@ declare module "zulip-js" {
     getHistoryById: UntypedApiCall;
     render: UntypedApiCall;
     retrieve: UntypedApiCall;
-    send: UntypedApiCall;
     update: UntypedApiCall;
+
+    send(_: {
+      to: string | number | Array<string | number>;
+      type: "private" | "stream";
+      topic: string;
+      content: string;
+    }): Promise<any>;
   };
 
   export type ClientMessagesFlags = {

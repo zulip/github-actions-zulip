@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src",
-    "package": "ncc build src/send-message.js -o dist/send-message",
+    "package": "ncc build src/send-message.ts -o dist/send-message",
     "test": "npm run lint"
   },
   "repository": {
@@ -31,6 +31,8 @@
   "dependencies": {
     "@actions/core": "1.4.0",
     "@actions/github": "5.0.0",
+    "ts-async-results": "^0.3.0",
+    "ts-results": "^3.3.0",
     "zulip-js": "^2.0.9"
   },
   "devDependencies": {
