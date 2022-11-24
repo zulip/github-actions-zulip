@@ -1,0 +1,16 @@
+{
+  "extends": [
+    "xo",
+    "xo-typescript",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:unicorn/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "root": true,
+  "rules": {
+    // These are incompatible with TypeScript "module: commonjs"
+    "@typescript-eslint/no-floating-promises": "off",
+    "unicorn/prefer-top-level-await": "off"
+  }
+}
