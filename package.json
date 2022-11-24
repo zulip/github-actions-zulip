@@ -4,7 +4,8 @@
   "private": true,
   "description": "Zulip GitHub Actions",
   "scripts": {
-    "lint": "standard src/*.js",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint --fix ./src",
     "package": "ncc build src/send-message.js -o dist/send-message",
     "test": "npm run lint"
   },
@@ -33,9 +34,17 @@
     "zulip-js": "^2.0.9"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
     "@vercel/ncc": "^0.34.0",
-    "eslint": "^7.32.0",
-    "standard": "^16.0.3",
+    "eslint": "^8.28.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-xo": "^0.43.1",
+    "eslint-config-xo-typescript": "^0.55.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-unicorn": "^45.0.0",
+    "prettier": "^2.8.0",
     "typescript": "^4.9.3"
   }
 }

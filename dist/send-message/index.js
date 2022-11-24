@@ -6014,76 +6014,81 @@ __nccwpck_require__.r(__webpack_exports__);
 
 
 
-const allNumericRegex = /^[0-9]+$/
+const allNumericRegex = /^\d+$/;
 
-async function run () {
-  const email = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('email', { required: true })
-  const apiKey = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('api-key', { required: true })
-  const realm = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('organization-url', { required: true })
-  let to = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('to', { required: true })
-  const type = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('type', { required: true })
-  const topic = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('topic', { required: false })
-  const content = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('content', { required: true })
+async function run() {
+  const email = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("email", { required: true });
+  const apiKey = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("api-key", { required: true });
+  const realm = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("organization-url", { required: true });
+  let to = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("to", { required: true });
+  const type = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("type", { required: true });
+  const topic = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("topic", { required: false });
+  const content = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("content", { required: true });
   const initialConfig = {
     username: email,
-    realm
-  }
-  const config = {}
+    realm,
+  };
+  const config = {};
   if (apiKey) {
-    Object.assign(config, initialConfig, { apiKey })
+    Object.assign(config, initialConfig, { apiKey });
   } else {
-    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)('api-key is mandatory in order to interact with the Zulip API.')
-    return
+    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)("api-key is mandatory in order to interact with the Zulip API.");
+    return;
   }
-  if (type === 'private') {
+
+  if (type === "private") {
     if (to) {
-      to = to.split(',')
-      const containsUserIds = to.every((item) => item.match(allNumericRegex))
+      to = to.split(",");
+      const containsUserIds = to.every((item) => item.match(allNumericRegex));
       if (containsUserIds) {
-        to = to.map((item) => parseInt(item))
+        to = to.map((item) => Number.parseInt(item));
       }
     }
-  } else if (type === 'stream') {
+  } else if (type === "stream") {
     if (!topic) {
-      (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)('topic is mandatory when type is "stream".')
-      return
+      (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)('topic is mandatory when type is "stream".');
+      return;
     }
-    if (to.match(allNumericRegex)) {
-      to = parseInt(to)
+
+    if (allNumericRegex.test(to)) {
+      to = Number.parseInt(to);
     }
   } else {
-    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)('type must be one of: private, stream.')
-    return
+    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)("type must be one of: private, stream.");
+    return;
   }
+
   try {
-    const client = await zulip_js__WEBPACK_IMPORTED_MODULE_1___default()(config)
+    const client = await zulip_js__WEBPACK_IMPORTED_MODULE_1___default()(config);
     // Send a message
-    const params = {
+    const parameters = {
       to,
       type,
       topic,
-      content
-    }
-    const response = await client.messages.send(params)
-    if (response.result === 'success') {
+      content,
+    };
+    const response = await client.messages.send(parameters);
+    if (response.result === "success") {
       // OK!
-      (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.info)(`Message successfully send with id: ${response.id}`)
+      (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.info)(`Message successfully send with id: ${response.id}`);
     } else {
-      const errorMessage = response.code ? `${response.code}: ${response.msg}` : response.msg
-      ;(0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(new Error(errorMessage))
+      const errorMessage = response.code
+        ? `${response.code}: ${response.msg}`
+        : response.msg;
+      (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(new Error(errorMessage));
     }
   } catch (error) {
-    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error)
+    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error);
   }
 }
 
-;(async () => {
+(async () => {
   try {
-    await run()
+    await run();
   } catch (error) {
-    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error)
+    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error);
   }
-})()
+})();
 
 })();
 
