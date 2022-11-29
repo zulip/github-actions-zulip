@@ -4,8 +4,8 @@
   "private": true,
   "description": "Zulip GitHub Actions",
   "scripts": {
-    "lint": "eslint ./src",
-    "lint:fix": "eslint --fix ./src",
+    "lint": "eslint ./src; prettier --check --loglevel=warn **/*.md",
+    "lint:fix": "eslint --fix ./src; prettier --check --write --loglevel=warn **/*.md",
     "package": "ncc build src/send-message.ts -o dist/send-message",
     "test": "npm run lint"
   },
