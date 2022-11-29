@@ -40,28 +40,30 @@ Format your message using [Zulip Markdown](https://zulip.com/help/format-your-me
 ## Example usage
 
 **Send a stream message**
+
 ```yml
 - name: Send a stream message
   uses: zulip/github-actions-zulip/send-message@v1
   with:
     api-key: ${{ secrets.ZULIP_API_KEY }}
-    email: 'username@example.com'
-    organization-url: 'https://org.zulipchat.com'
-    to: 'social'
-    type: 'stream'
-    topic: 'Castle'
-    content: 'I come not, friends, to steal away your hearts.'
+    email: "username@example.com"
+    organization-url: "https://org.zulipchat.com"
+    to: "social"
+    type: "stream"
+    topic: "Castle"
+    content: "I come not, friends, to steal away your hearts."
 ```
 
 **Send a private message**
+
 ```yml
 - name: Send a private message
   uses: zulip/github-actions-zulip/send-message@v1
   with:
     api-key: ${{ secrets.ZULIP_API_KEY }}
-    email: 'username@example.com'
-    organization-url: 'https://org.zulipchat.com'
-    to: '9' # user_id
-    type: 'private'
-    content: 'With mirth and laughter let old wrinkles come.'
+    email: "username@example.com"
+    organization-url: "https://org.zulipchat.com"
+    to: "9" # user_id
+    type: "private"
+    content: "With mirth and laughter let old wrinkles come."
 ```
