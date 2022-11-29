@@ -27,5 +27,5 @@ inputs:
     description: 'The content of the message. Maximum message size of 10000 bytes.'
     required: true
 runs:
-  using: 'node12'
+  using: 'node16'
   main: '../dist/send-message/index.js'
