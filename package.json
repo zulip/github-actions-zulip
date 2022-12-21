@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/zulip/github-actions-zulip#readme",
   "dependencies": {
-    "@actions/core": "1.4.0",
+    "@actions/core": "1.10.0",
     "@actions/github": "5.0.0",
     "ts-async-results": "^0.3.0",
     "ts-results": "^3.3.0",
