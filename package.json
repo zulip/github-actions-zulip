@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "private": true,
   "description": "Zulip GitHub Actions",
+  "type": "module",
   "scripts": {
     "lint": "eslint --ext=.ts . && prettier --check --log-level=warn . \"!**/*.ts\"",
     "lint:fix": "eslint --ext=.ts --fix . && prettier --check --write --log-level=warn . \"!**/*.ts\"",
