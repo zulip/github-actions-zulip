@@ -2,7 +2,7 @@
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
-    "target": "es2020",
+    "target": "esnext",
     "module": "nodenext",
     "noEmit": true,
     "esModuleInterop": true,
