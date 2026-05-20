@@ -41,7 +41,7 @@ function getMandatoryInputFromJob(key: string): Result<string, string> {
 function getDestinationKindInputFromJob(): Result<DestinationKind, string> {
   const validValues = Object.values(DestinationKind);
   const errorMessage = `input "type" must exist and be one of ${validValues.join(
-    " ,"
+    " ,",
   )}`;
   return getMandatoryInputFromJob("type")
     .mapErr(() => errorMessage)
@@ -96,7 +96,7 @@ function parseDestinationDetails({
 }
 
 function parsePrivateMessageDestinations(
-  input: string
+  input: string,
 ): PrivateDestination["destination"] {
   const rawDestinations = input.split(",");
   return allNumeric(rawDestinations)
@@ -105,7 +105,7 @@ function parsePrivateMessageDestinations(
 }
 
 function parseStreamDestination(
-  input: string
+  input: string,
 ): StreamDestination["destination"] {
   return allNumeric(input) ? Number.parseInt(input, 10) : input;
 }
@@ -115,8 +115,8 @@ async function getZulipClient(): Promise<Result<Client, string>> {
     Result.all(
       getMandatoryInputFromJob("api-key"),
       getMandatoryInputFromJob("email"),
-      getMandatoryInputFromJob("organization-url")
-    )
+      getMandatoryInputFromJob("organization-url"),
+    ),
   )
     .flatMap(
       ([apiKey, username, realm]) =>
@@ -126,9 +126,9 @@ async function getZulipClient(): Promise<Result<Client, string>> {
               apiKey,
               username,
               realm,
-            })
-          )
-        )
+            }),
+          ),
+        ),
     )
     .resolve();
 }
@@ -139,8 +139,8 @@ async function postMessageFromJobInputs(): Promise<Result<string, string>> {
     Result.all(
       getMandatoryInputFromJob("content"),
       getDestinationDetails(),
-      await getZulipClient()
-    )
+      await getZulipClient(),
+    ),
   )
     .flatMap(([content, destination, client]) => {
       const parameters = {
@@ -150,7 +150,7 @@ async function postMessageFromJobInputs(): Promise<Result<string, string>> {
         content,
       };
       return new AsyncResultWrapper(
-        Result.wrapAsync(async () => client.messages.send(parameters))
+        Result.wrapAsync(async () => client.messages.send(parameters)),
       );
     })
     .flatMap((response: any) => {
@@ -159,7 +159,7 @@ async function postMessageFromJobInputs(): Promise<Result<string, string>> {
         : new Err(
             response.code
               ? `${response.code as number}: ${response.msg as string}`
-              : response.msg
+              : response.msg,
           );
     })
     .resolve();

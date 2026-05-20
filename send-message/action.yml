@@ -1,31 +1,31 @@
-name: 'Zulip Send Message Action'
+name: "Zulip Send Message Action"
 branding:
-  icon: 'mail'
-  color: 'gray-dark'
-author: 'Guillaume Grossetie'
-description: 'Sends a message to Zulip'
+  icon: "mail"
+  color: "gray-dark"
+author: "Guillaume Grossetie"
+description: "Sends a message to Zulip"
 inputs:
   api-key:
-    description: 'API key used to interact with the Zulip API. You can get an API key through Zulip''s web interface.'
+    description: "API key used to interact with the Zulip API. You can get an API key through Zulip's web interface."
     required: true
   email:
-    description: 'Email address of the user who owns the API key mentioned above.'
+    description: "Email address of the user who owns the API key mentioned above."
     required: true
   organization-url:
-    description: 'Zulip organization canonical URL.'
+    description: "Zulip organization canonical URL."
     required: true
   to:
-    description: 'For stream messages, either the name or integer ID of the stream. For private messages, either a list containing integer user IDs or a list containing string email addresses (separated by comma).'
+    description: "For stream messages, either the name or integer ID of the stream. For private messages, either a list containing integer user IDs or a list containing string email addresses (separated by comma)."
     required: true
   type:
-    description: 'The type of message to be sent. private for a private message and stream for a stream message. Must be one of: private, stream.'
+    description: "The type of message to be sent. private for a private message and stream for a stream message. Must be one of: private, stream."
     required: true
   topic:
     description: 'The topic of the message. Only required for stream messages (type="stream"), ignored otherwise. Maximum length of 60 characters.'
     required: false
   content:
-    description: 'The content of the message. Maximum message size of 10000 bytes.'
+    description: "The content of the message. Maximum message size of 10000 bytes."
     required: true
 runs:
-  using: 'node24'
-  main: '../dist/send-message/index.js'
+  using: "node24"
+  main: "../dist/send-message/index.js"

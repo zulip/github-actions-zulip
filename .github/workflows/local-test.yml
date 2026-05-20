@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
     branches:
-      - '*'
+      - "*"
 
 permissions:
   contents: read
@@ -30,23 +30,23 @@ jobs:
       - name: Send a stream message
         uses: ./send-message
         with:
-          email: 'it-bot@github-actions-test.zulipchat.com'
+          email: "it-bot@github-actions-test.zulipchat.com"
           api-key: ${{ secrets.ZULIP_API_KEY }}
-          organization-url: 'https://github-actions-test.zulipchat.com'
-          to: 'test'
-          type: 'stream'
-          topic: 'github actions'
-          content: 'I come not, friends, to steal away your hearts.'
+          organization-url: "https://github-actions-test.zulipchat.com"
+          to: "test"
+          type: "stream"
+          topic: "github actions"
+          content: "I come not, friends, to steal away your hearts."
         if: ${{ steps.enable_integration_tests.outputs.value == 'true' }}
       - name: Send a private message
         uses: ./send-message
         with:
-          email: 'it-bot@github-actions-test.zulipchat.com'
+          email: "it-bot@github-actions-test.zulipchat.com"
           api-key: ${{ secrets.ZULIP_API_KEY }}
-          organization-url: 'https://github-actions-test.zulipchat.com'
-          to: '423060'
-          type: 'private'
-          content: 'With mirth and laughter let old wrinkles come.'
+          organization-url: "https://github-actions-test.zulipchat.com"
+          to: "423060"
+          type: "private"
+          content: "With mirth and laughter let old wrinkles come."
         if: ${{ steps.enable_integration_tests.outputs.value == 'true' }}
   failure:
     runs-on: ubuntu-latest
@@ -62,20 +62,20 @@ jobs:
       - name: Missing API key and password
         uses: ./send-message
         with:
-          email: 'it-bot@github-actions-test.zulipchat.com'
-          organization-url: 'https://github-actions-test.zulipchat.com'
-          to: 'test'
-          type: 'stream'
-          topic: 'github actions'
-          content: 'I come not, friends, to steal away your hearts.'
+          email: "it-bot@github-actions-test.zulipchat.com"
+          organization-url: "https://github-actions-test.zulipchat.com"
+          to: "test"
+          type: "stream"
+          topic: "github actions"
+          content: "I come not, friends, to steal away your hearts."
         continue-on-error: true
       - name: Wrong organization URL
         uses: ./send-message
         with:
-          email: 'it-bot@github-actions-test.zulipchat.com'
+          email: "it-bot@github-actions-test.zulipchat.com"
           api-key: ${{ secrets.ZULIP_API_KEY }}
-          organization-url: 'https://org.zulipchat.com'
-          to: '282093'
-          type: 'private'
-          content: 'With mirth and laughter let old wrinkles come.'
+          organization-url: "https://org.zulipchat.com"
+          to: "282093"
+          type: "private"
+          content: "With mirth and laughter let old wrinkles come."
         continue-on-error: true

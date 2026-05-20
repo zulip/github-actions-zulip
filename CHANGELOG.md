@@ -14,13 +14,13 @@ _Before_
 - name: Send a stream message
   uses: yuzutech/zulip-send-message-action@v0.1.0
   with:
-    username: 'username@example.com'
-    api-key: 'abcd1234'
-    organization-url: 'https://org.zulipchat.com'
-    to: 'social'
-    type: 'stream'
-    topic: 'Castle'
-    content: 'I come not, friends, to steal away your hearts.'
+    username: "username@example.com"
+    api-key: "abcd1234"
+    organization-url: "https://org.zulipchat.com"
+    to: "social"
+    type: "stream"
+    topic: "Castle"
+    content: "I come not, friends, to steal away your hearts."
 ```
 
 _After_
@@ -29,18 +29,18 @@ _After_
 - name: Send a stream message
   uses: zulip/github-actions-zulip/send-message@v1
   with:
-    email: 'username@example.com'
-    api-key: 'abcd1234'
-    organization-url: 'https://org.zulipchat.com'
-    to: 'social'
-    type: 'stream'
-    topic: 'Castle'
-    content: 'I come not, friends, to steal away your hearts.'
+    email: "username@example.com"
+    api-key: "abcd1234"
+    organization-url: "https://org.zulipchat.com"
+    to: "social"
+    type: "stream"
+    topic: "Castle"
+    content: "I come not, friends, to steal away your hearts."
 ```
 
 - Align naming with Zulip API
-   * Remove `password` as this authentification method is not recommended (the preferred auth method is via `api-key`)
-   * Rename `username` to `email` for consistency
+  - Remove `password` as this authentification method is not recommended (the preferred auth method is via `api-key`)
+  - Rename `username` to `email` for consistency
 - Transfer the repository to the `@zulip` organization
 - Move the "send message action" to a subdirectory
 
