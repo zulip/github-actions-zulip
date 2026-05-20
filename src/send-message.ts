@@ -20,7 +20,7 @@ enum DestinationKind {
 }
 
 function allNumeric(candidate: string | string[]): boolean {
-  const oneOrMoreNumbersOnly = /^\d+$/;
+  const oneOrMoreNumbersOnly = /^\d+$/v;
   return typeof candidate === "string"
     ? oneOrMoreNumbersOnly.test(candidate)
     : candidate.every((item: string) => oneOrMoreNumbersOnly.exec(item));
@@ -65,7 +65,6 @@ function parseDestinationDetails({
   kind: DestinationKind;
   destination: string;
 }): Result<DestinationDetails, string> {
-  // eslint-disable-next-line default-case
   switch (kind) {
     case DestinationKind.Private: {
       return new Ok({
