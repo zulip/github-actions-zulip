@@ -156,10 +156,9 @@ async function postMessageFromJobInputs(): Promise<Result<string, string>> {
     .resolve();
 }
 
-postMessageFromJobInputs().then((result) => {
-  if (result.ok) {
-    info(result.val);
-  } else {
-    setFailed(result.val);
-  }
-});
+const result = await postMessageFromJobInputs();
+if (result.ok) {
+  info(result.val);
+} else {
+  setFailed(result.val);
+}

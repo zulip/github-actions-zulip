@@ -32473,6 +32473,131 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ 1074:
+/***/ ((module, __unused_webpack___webpack_exports__, __nccwpck_require__) => {
+
+__nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(2186);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var ts_results__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(4616);
+/* harmony import */ var ts_results__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(ts_results__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var ts_async_results__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(9770);
+/* harmony import */ var ts_async_results__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__nccwpck_require__.n(ts_async_results__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var zulip_js__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(1917);
+/* harmony import */ var zulip_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__nccwpck_require__.n(zulip_js__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+var DestinationKind;
+(function (DestinationKind) {
+    DestinationKind["Private"] = "private";
+    DestinationKind["Stream"] = "stream";
+})(DestinationKind || (DestinationKind = {}));
+function allNumeric(candidate) {
+    const oneOrMoreNumbersOnly = /^\d+$/;
+    return typeof candidate === "string"
+        ? oneOrMoreNumbersOnly.test(candidate)
+        : candidate.every((item) => oneOrMoreNumbersOnly.exec(item));
+}
+function getMandatoryInputFromJob(key) {
+    const candidate = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)(key, { required: true });
+    return candidate
+        ? new ts_results__WEBPACK_IMPORTED_MODULE_1__.Ok(candidate)
+        : new ts_results__WEBPACK_IMPORTED_MODULE_1__.Err(`input "${key}" must be provided and non-empty`);
+}
+function getDestinationKindInputFromJob() {
+    const validValues = Object.values(DestinationKind);
+    const errorMessage = `input "type" must exist and be one of ${validValues.join(" ,")}`;
+    return getMandatoryInputFromJob("type")
+        .mapErr(() => errorMessage)
+        .andThen((input) => {
+        return validValues.includes(input)
+            ? new ts_results__WEBPACK_IMPORTED_MODULE_1__.Ok(input)
+            : new ts_results__WEBPACK_IMPORTED_MODULE_1__.Err(errorMessage);
+    });
+}
+function getDestinationDetails() {
+    return getDestinationKindInputFromJob()
+        .andThen((destinationKind) => {
+        return getMandatoryInputFromJob("to").map((destination) => {
+            return { kind: destinationKind, destination };
+        });
+    })
+        .andThen(parseDestinationDetails);
+}
+function parseDestinationDetails({ kind, destination, }) {
+    // eslint-disable-next-line default-case
+    switch (kind) {
+        case DestinationKind.Private: {
+            return new ts_results__WEBPACK_IMPORTED_MODULE_1__.Ok({
+                kind,
+                destination: parsePrivateMessageDestinations(destination),
+            });
+        }
+        case DestinationKind.Stream: {
+            return getMandatoryInputFromJob("topic")
+                .map((topic) => {
+                return {
+                    kind,
+                    topic,
+                    destination: parseStreamDestination(destination),
+                };
+            })
+                .mapErr(() => 'topic is mandatory when type is "stream"');
+        }
+    }
+}
+function parsePrivateMessageDestinations(input) {
+    const rawDestinations = input.split(",");
+    return allNumeric(rawDestinations)
+        ? rawDestinations.map((item) => Number.parseInt(item, 10))
+        : rawDestinations;
+}
+function parseStreamDestination(input) {
+    return allNumeric(input) ? Number.parseInt(input, 10) : input;
+}
+async function getZulipClient() {
+    return new ts_async_results__WEBPACK_IMPORTED_MODULE_2__.AsyncResultWrapper(ts_results__WEBPACK_IMPORTED_MODULE_1__.Result.all(getMandatoryInputFromJob("api-key"), getMandatoryInputFromJob("email"), getMandatoryInputFromJob("organization-url")))
+        .flatMap(([apiKey, username, realm]) => new ts_async_results__WEBPACK_IMPORTED_MODULE_2__.AsyncResultWrapper(ts_results__WEBPACK_IMPORTED_MODULE_1__.Result.wrapAsync(async () => zulip_js__WEBPACK_IMPORTED_MODULE_3___default()({
+        apiKey,
+        username,
+        realm,
+    }))))
+        .resolve();
+}
+async function postMessageFromJobInputs() {
+    const topic = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("topic", { required: false });
+    return new ts_async_results__WEBPACK_IMPORTED_MODULE_2__.AsyncResultWrapper(ts_results__WEBPACK_IMPORTED_MODULE_1__.Result.all(getMandatoryInputFromJob("content"), getDestinationDetails(), await getZulipClient()))
+        .flatMap(([content, destination, client]) => {
+        const parameters = {
+            to: destination.destination,
+            type: destination.kind,
+            topic,
+            content,
+        };
+        return new ts_async_results__WEBPACK_IMPORTED_MODULE_2__.AsyncResultWrapper(ts_results__WEBPACK_IMPORTED_MODULE_1__.Result.wrapAsync(async () => client.messages.send(parameters)));
+    })
+        .flatMap((response) => {
+        return response.result === "success"
+            ? new ts_results__WEBPACK_IMPORTED_MODULE_1__.Ok(`Message successfully sent with id: ${response.id}`)
+            : new ts_results__WEBPACK_IMPORTED_MODULE_1__.Err(response.code ? `${response.code}: ${response.msg}` : response.msg);
+    })
+        .resolve();
+}
+const result = await postMessageFromJobInputs();
+if (result.ok) {
+    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.info)(result.val);
+}
+else {
+    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(result.val);
+}
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } }, 1);
+
+/***/ }),
+
 /***/ 2877:
 /***/ ((module) => {
 
@@ -34884,6 +35009,75 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ }
 /******/ 
 /************************************************************************/
+/******/ /* webpack/runtime/async module */
+/******/ (() => {
+/******/ 	var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
+/******/ 	var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
+/******/ 	var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
+/******/ 	var resolveQueue = (queue) => {
+/******/ 		if(queue && !queue.d) {
+/******/ 			queue.d = 1;
+/******/ 			queue.forEach((fn) => (fn.r--));
+/******/ 			queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
+/******/ 		}
+/******/ 	}
+/******/ 	var wrapDeps = (deps) => (deps.map((dep) => {
+/******/ 		if(dep !== null && typeof dep === "object") {
+/******/ 			if(dep[webpackQueues]) return dep;
+/******/ 			if(dep.then) {
+/******/ 				var queue = [];
+/******/ 				queue.d = 0;
+/******/ 				dep.then((r) => {
+/******/ 					obj[webpackExports] = r;
+/******/ 					resolveQueue(queue);
+/******/ 				}, (e) => {
+/******/ 					obj[webpackError] = e;
+/******/ 					resolveQueue(queue);
+/******/ 				});
+/******/ 				var obj = {};
+/******/ 				obj[webpackQueues] = (fn) => (fn(queue));
+/******/ 				return obj;
+/******/ 			}
+/******/ 		}
+/******/ 		var ret = {};
+/******/ 		ret[webpackQueues] = x => {};
+/******/ 		ret[webpackExports] = dep;
+/******/ 		return ret;
+/******/ 	}));
+/******/ 	__nccwpck_require__.a = (module, body, hasAwait) => {
+/******/ 		var queue;
+/******/ 		hasAwait && ((queue = []).d = 1);
+/******/ 		var depQueues = new Set();
+/******/ 		var exports = module.exports;
+/******/ 		var currentDeps;
+/******/ 		var outerResolve;
+/******/ 		var reject;
+/******/ 		var promise = new Promise((resolve, rej) => {
+/******/ 			reject = rej;
+/******/ 			outerResolve = resolve;
+/******/ 		});
+/******/ 		promise[webpackExports] = exports;
+/******/ 		promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
+/******/ 		module.exports = promise;
+/******/ 		body((deps) => {
+/******/ 			currentDeps = wrapDeps(deps);
+/******/ 			var fn;
+/******/ 			var getResult = () => (currentDeps.map((d) => {
+/******/ 				if(d[webpackError]) throw d[webpackError];
+/******/ 				return d[webpackExports];
+/******/ 			}))
+/******/ 			var promise = new Promise((resolve) => {
+/******/ 				fn = () => (resolve(getResult));
+/******/ 				fn.r = 0;
+/******/ 				var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
+/******/ 				currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
+/******/ 			});
+/******/ 			return fn.r ? promise : getResult();
+/******/ 		}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
+/******/ 		queue && (queue.d = 0);
+/******/ 	};
+/******/ })();
+/******/ 
 /******/ /* webpack/runtime/compat get default export */
 /******/ (() => {
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -34918,125 +35112,10 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = new URL('.', import.meta.url).pathname.slice(import.meta.url.match(/^file:\/\/\/\w:/) ? 1 : 0, -1) + "/";
 /******/ 
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(2186);
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var ts_results__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(4616);
-/* harmony import */ var ts_results__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(ts_results__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var ts_async_results__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(9770);
-/* harmony import */ var ts_async_results__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__nccwpck_require__.n(ts_async_results__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var zulip_js__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(1917);
-/* harmony import */ var zulip_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__nccwpck_require__.n(zulip_js__WEBPACK_IMPORTED_MODULE_3__);
-
-
-
-
-var DestinationKind;
-(function (DestinationKind) {
-    DestinationKind["Private"] = "private";
-    DestinationKind["Stream"] = "stream";
-})(DestinationKind || (DestinationKind = {}));
-function allNumeric(candidate) {
-    const oneOrMoreNumbersOnly = /^\d+$/;
-    return typeof candidate === "string"
-        ? oneOrMoreNumbersOnly.test(candidate)
-        : candidate.every((item) => oneOrMoreNumbersOnly.exec(item));
-}
-function getMandatoryInputFromJob(key) {
-    const candidate = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)(key, { required: true });
-    return candidate
-        ? new ts_results__WEBPACK_IMPORTED_MODULE_1__.Ok(candidate)
-        : new ts_results__WEBPACK_IMPORTED_MODULE_1__.Err(`input "${key}" must be provided and non-empty`);
-}
-function getDestinationKindInputFromJob() {
-    const validValues = Object.values(DestinationKind);
-    const errorMessage = `input "type" must exist and be one of ${validValues.join(" ,")}`;
-    return getMandatoryInputFromJob("type")
-        .mapErr(() => errorMessage)
-        .andThen((input) => {
-        return validValues.includes(input)
-            ? new ts_results__WEBPACK_IMPORTED_MODULE_1__.Ok(input)
-            : new ts_results__WEBPACK_IMPORTED_MODULE_1__.Err(errorMessage);
-    });
-}
-function getDestinationDetails() {
-    return getDestinationKindInputFromJob()
-        .andThen((destinationKind) => {
-        return getMandatoryInputFromJob("to").map((destination) => {
-            return { kind: destinationKind, destination };
-        });
-    })
-        .andThen(parseDestinationDetails);
-}
-function parseDestinationDetails({ kind, destination, }) {
-    // eslint-disable-next-line default-case
-    switch (kind) {
-        case DestinationKind.Private: {
-            return new ts_results__WEBPACK_IMPORTED_MODULE_1__.Ok({
-                kind,
-                destination: parsePrivateMessageDestinations(destination),
-            });
-        }
-        case DestinationKind.Stream: {
-            return getMandatoryInputFromJob("topic")
-                .map((topic) => {
-                return {
-                    kind,
-                    topic,
-                    destination: parseStreamDestination(destination),
-                };
-            })
-                .mapErr(() => 'topic is mandatory when type is "stream"');
-        }
-    }
-}
-function parsePrivateMessageDestinations(input) {
-    const rawDestinations = input.split(",");
-    return allNumeric(rawDestinations)
-        ? rawDestinations.map((item) => Number.parseInt(item, 10))
-        : rawDestinations;
-}
-function parseStreamDestination(input) {
-    return allNumeric(input) ? Number.parseInt(input, 10) : input;
-}
-async function getZulipClient() {
-    return new ts_async_results__WEBPACK_IMPORTED_MODULE_2__.AsyncResultWrapper(ts_results__WEBPACK_IMPORTED_MODULE_1__.Result.all(getMandatoryInputFromJob("api-key"), getMandatoryInputFromJob("email"), getMandatoryInputFromJob("organization-url")))
-        .flatMap(([apiKey, username, realm]) => new ts_async_results__WEBPACK_IMPORTED_MODULE_2__.AsyncResultWrapper(ts_results__WEBPACK_IMPORTED_MODULE_1__.Result.wrapAsync(async () => zulip_js__WEBPACK_IMPORTED_MODULE_3___default()({
-        apiKey,
-        username,
-        realm,
-    }))))
-        .resolve();
-}
-async function postMessageFromJobInputs() {
-    const topic = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("topic", { required: false });
-    return new ts_async_results__WEBPACK_IMPORTED_MODULE_2__.AsyncResultWrapper(ts_results__WEBPACK_IMPORTED_MODULE_1__.Result.all(getMandatoryInputFromJob("content"), getDestinationDetails(), await getZulipClient()))
-        .flatMap(([content, destination, client]) => {
-        const parameters = {
-            to: destination.destination,
-            type: destination.kind,
-            topic,
-            content,
-        };
-        return new ts_async_results__WEBPACK_IMPORTED_MODULE_2__.AsyncResultWrapper(ts_results__WEBPACK_IMPORTED_MODULE_1__.Result.wrapAsync(async () => client.messages.send(parameters)));
-    })
-        .flatMap((response) => {
-        return response.result === "success"
-            ? new ts_results__WEBPACK_IMPORTED_MODULE_1__.Ok(`Message successfully sent with id: ${response.id}`)
-            : new ts_results__WEBPACK_IMPORTED_MODULE_1__.Err(response.code ? `${response.code}: ${response.msg}` : response.msg);
-    })
-        .resolve();
-}
-postMessageFromJobInputs().then((result) => {
-    if (result.ok) {
-        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.info)(result.val);
-    }
-    else {
-        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(result.val);
-    }
-});
-
-})();
-
+/******/ 
+/******/ // startup
+/******/ // Load entry module and return exports
+/******/ // This entry module used 'module' so it can't be inlined
+/******/ var __webpack_exports__ = __nccwpck_require__(1074);
+/******/ __webpack_exports__ = await __webpack_exports__;
+/******/ 
