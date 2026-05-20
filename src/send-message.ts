@@ -39,14 +39,14 @@ function getMandatoryInputFromJob(key: string): Result<string, string> {
 }
 
 function getDestinationKindInputFromJob(): Result<DestinationKind, string> {
-  const validValues = Object.values(DestinationKind);
+  const validValues: string[] = Object.values(DestinationKind);
   const errorMessage = `input "type" must exist and be one of ${validValues.join(
     " ,",
   )}`;
   return getMandatoryInputFromJob("type")
     .mapErr(() => errorMessage)
     .andThen((input) => {
-      return validValues.includes(input as any)
+      return validValues.includes(input)
         ? new Ok(input as DestinationKind)
         : new Err(errorMessage);
     });
