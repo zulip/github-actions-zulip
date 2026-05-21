@@ -1,7 +1,7 @@
 import { getInput, info, setFailed } from "@actions/core";
 import { Err, Ok, Result } from "ts-results";
 import { AsyncResultWrapper } from "ts-async-results";
-import { type Client, default as zulipInit } from "zulip-js";
+import zulipInit, { type Client } from "zulip-js";
 
 type DestinationDetails = PrivateDestination | StreamDestination;
 type PrivateDestination = {
