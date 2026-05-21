@@ -1,5 +1,15 @@
 # Zulip GitHub Action Changelog
 
+## 2.0.0 (2026-05-20)
+
+**Breaking changes**
+
+- Switch from deprecated Node 20 to Node 24.
+
+**Infrastructure**
+
+- Upgrade dependencies.
+
 ## 1.0.0 (2021-08-14)
 
 **Breaking changes**
