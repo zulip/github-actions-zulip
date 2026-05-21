@@ -19,10 +19,6 @@ enum DestinationKind {
   Stream = "stream",
 }
 
-function assertExhaustiveSwitch(_: never): never {
-  throw new Error("switch statement not exhaustive");
-}
-
 function allNumeric(candidate: string | string[]): boolean {
   const oneOrMoreNumbersOnly = /^\d+$/;
   return typeof candidate === "string"
@@ -69,6 +65,7 @@ function parseDestinationDetails({
   kind: DestinationKind;
   destination: string;
 }): Result<DestinationDetails, string> {
+  // eslint-disable-next-line default-case
   switch (kind) {
     case DestinationKind.Private: {
       return new Ok({
@@ -87,10 +84,6 @@ function parseDestinationDetails({
           };
         })
         .mapErr(() => 'topic is mandatory when type is "stream"');
-    }
-
-    default: {
-      assertExhaustiveSwitch(kind);
     }
   }
 }

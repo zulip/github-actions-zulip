@@ -32616,9 +32616,6 @@ var DestinationKind;
     DestinationKind["Private"] = "private";
     DestinationKind["Stream"] = "stream";
 })(DestinationKind || (DestinationKind = {}));
-function assertExhaustiveSwitch(_) {
-    throw new Error("switch statement not exhaustive");
-}
 function allNumeric(candidate) {
     const oneOrMoreNumbersOnly = /^\d+$/;
     return typeof candidate === "string"
@@ -32652,6 +32649,7 @@ function getDestinationDetails() {
         .andThen(parseDestinationDetails);
 }
 function parseDestinationDetails({ kind, destination, }) {
+    // eslint-disable-next-line default-case
     switch (kind) {
         case DestinationKind.Private: {
             return new ts_results_1.Ok({
@@ -32669,9 +32667,6 @@ function parseDestinationDetails({ kind, destination, }) {
                 };
             })
                 .mapErr(() => 'topic is mandatory when type is "stream"');
-        }
-        default: {
-            assertExhaustiveSwitch(kind);
         }
     }
 }
