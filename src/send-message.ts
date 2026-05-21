@@ -146,13 +146,11 @@ async function postMessageFromJobInputs(): Promise<Result<string, string>> {
         Result.wrapAsync(async () => client.messages.send(parameters)),
       );
     })
-    .flatMap((response: any) => {
+    .flatMap((response) => {
       return response.result === "success"
-        ? new Ok(`Message successfully sent with id: ${response.id as string}`)
+        ? new Ok(`Message successfully sent with id: ${response.id}`)
         : new Err(
-            response.code
-              ? `${response.code as number}: ${response.msg as string}`
-              : response.msg,
+            response.code ? `${response.code}: ${response.msg}` : response.msg,
           );
     })
     .resolve();

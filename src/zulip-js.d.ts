@@ -35,7 +35,10 @@ declare module "zulip-js" {
       type: "private" | "stream";
       topic: string;
       content: string;
-    }): Promise<any>;
+    }): Promise<
+      | { result: "success"; id: number }
+      | { result: "error"; code: string; msg: string }
+    >;
   };
 
   export type ClientMessagesFlags = {

@@ -35025,9 +35025,7 @@ async function postMessageFromJobInputs() {
         .flatMap((response) => {
         return response.result === "success"
             ? new ts_results__WEBPACK_IMPORTED_MODULE_1__.Ok(`Message successfully sent with id: ${response.id}`)
-            : new ts_results__WEBPACK_IMPORTED_MODULE_1__.Err(response.code
-                ? `${response.code}: ${response.msg}`
-                : response.msg);
+            : new ts_results__WEBPACK_IMPORTED_MODULE_1__.Err(response.code ? `${response.code}: ${response.msg}` : response.msg);
     })
         .resolve();
 }
