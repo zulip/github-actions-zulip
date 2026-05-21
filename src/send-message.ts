@@ -39,13 +39,13 @@ function getDestinationKindInputFromJob(): Result<DestinationKind, string> {
   const errorMessage = `input "type" must exist and be one of ${validValues.join(
     " ,",
   )}`;
+  const isValid = (input: string): input is DestinationKind =>
+    validValues.includes(input);
   return getMandatoryInputFromJob("type")
     .mapErr(() => errorMessage)
-    .andThen((input) => {
-      return validValues.includes(input)
-        ? new Ok(input as DestinationKind)
-        : new Err(errorMessage);
-    });
+    .andThen((input) =>
+      isValid(input) ? new Ok(input) : new Err(errorMessage),
+    );
 }
 
 function getDestinationDetails(): Result<DestinationDetails, string> {

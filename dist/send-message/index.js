@@ -32509,13 +32509,10 @@ function getMandatoryInputFromJob(key) {
 function getDestinationKindInputFromJob() {
     const validValues = Object.values(DestinationKind);
     const errorMessage = `input "type" must exist and be one of ${validValues.join(" ,")}`;
+    const isValid = (input) => validValues.includes(input);
     return getMandatoryInputFromJob("type")
         .mapErr(() => errorMessage)
-        .andThen((input) => {
-        return validValues.includes(input)
-            ? new ts_results__WEBPACK_IMPORTED_MODULE_1__.Ok(input)
-            : new ts_results__WEBPACK_IMPORTED_MODULE_1__.Err(errorMessage);
-    });
+        .andThen((input) => isValid(input) ? new ts_results__WEBPACK_IMPORTED_MODULE_1__.Ok(input) : new ts_results__WEBPACK_IMPORTED_MODULE_1__.Err(errorMessage));
 }
 function getDestinationDetails() {
     return getDestinationKindInputFromJob()
