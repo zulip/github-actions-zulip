@@ -1,5 +1,11 @@
 # Zulip GitHub Action Changelog
 
+## 2.0.1 (2026-05-21)
+
+**Fixes**
+
+- Add missing tslib dependency.
+
 ## 2.0.0 (2026-05-20)
 
 **Breaking changes**
