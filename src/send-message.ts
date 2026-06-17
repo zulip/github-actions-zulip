@@ -50,11 +50,12 @@ function getDestinationKindInputFromJob(): Result<DestinationKind, string> {
 
 function getDestinationDetails(): Result<DestinationDetails, string> {
   return getDestinationKindInputFromJob()
-    .andThen((destinationKind) => {
-      return getMandatoryInputFromJob("to").map((destination) => {
-        return { kind: destinationKind, destination };
-      });
-    })
+    .andThen((destinationKind) =>
+      getMandatoryInputFromJob("to").map((destination) => ({
+        kind: destinationKind,
+        destination,
+      })),
+    )
     .andThen(parseDestinationDetails);
 }
 
@@ -75,13 +76,11 @@ function parseDestinationDetails({
 
     case DestinationKind.Stream: {
       return getMandatoryInputFromJob("topic")
-        .map((topic) => {
-          return {
-            kind,
-            topic,
-            destination: parseStreamDestination(destination),
-          };
-        })
+        .map((topic) => ({
+          kind,
+          topic,
+          destination: parseStreamDestination(destination),
+        }))
         .mapErr(() => 'topic is mandatory when type is "stream"');
     }
   }
@@ -145,15 +144,15 @@ async function postMessageFromJobInputs(): Promise<Result<string, string>> {
         Result.wrapAsync(async () => client.messages.send(parameters)),
       );
     })
-    .flatMap((response) => {
-      return response.result === "success"
+    .flatMap((response) =>
+      response.result === "success"
         ? new Ok(`Message successfully sent with id: ${response.id}`)
         : new Err(
             response.code === ""
               ? response.msg
               : `${response.code}: ${response.msg}`,
-          );
-    })
+          ),
+    )
     .resolve();
 }
 

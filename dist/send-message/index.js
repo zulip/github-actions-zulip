@@ -36696,11 +36696,10 @@ function getDestinationKindInputFromJob() {
 }
 function getDestinationDetails() {
     return getDestinationKindInputFromJob()
-        .andThen((destinationKind) => {
-        return getMandatoryInputFromJob("to").map((destination) => {
-            return { kind: destinationKind, destination };
-        });
-    })
+        .andThen((destinationKind) => getMandatoryInputFromJob("to").map((destination) => ({
+        kind: destinationKind,
+        destination,
+    })))
         .andThen(parseDestinationDetails);
 }
 function parseDestinationDetails({ kind, destination, }) {
@@ -36713,13 +36712,11 @@ function parseDestinationDetails({ kind, destination, }) {
         }
         case DestinationKind.Stream: {
             return getMandatoryInputFromJob("topic")
-                .map((topic) => {
-                return {
-                    kind,
-                    topic,
-                    destination: parseStreamDestination(destination),
-                };
-            })
+                .map((topic) => ({
+                kind,
+                topic,
+                destination: parseStreamDestination(destination),
+            }))
                 .mapErr(() => 'topic is mandatory when type is "stream"');
         }
     }
@@ -36754,13 +36751,11 @@ async function postMessageFromJobInputs() {
         };
         return new ts_async_results__WEBPACK_IMPORTED_MODULE_2__.AsyncResultWrapper(ts_results__WEBPACK_IMPORTED_MODULE_1__.Result.wrapAsync(async () => client.messages.send(parameters)));
     })
-        .flatMap((response) => {
-        return response.result === "success"
-            ? new ts_results__WEBPACK_IMPORTED_MODULE_1__.Ok(`Message successfully sent with id: ${response.id}`)
-            : new ts_results__WEBPACK_IMPORTED_MODULE_1__.Err(response.code === ""
-                ? response.msg
-                : `${response.code}: ${response.msg}`);
-    })
+        .flatMap((response) => response.result === "success"
+        ? new ts_results__WEBPACK_IMPORTED_MODULE_1__.Ok(`Message successfully sent with id: ${response.id}`)
+        : new ts_results__WEBPACK_IMPORTED_MODULE_1__.Err(response.code === ""
+            ? response.msg
+            : `${response.code}: ${response.msg}`))
         .resolve();
 }
 const result = await postMessageFromJobInputs();
