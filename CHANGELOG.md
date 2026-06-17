@@ -1,5 +1,11 @@
 # Zulip GitHub Action Changelog
 
+## 2.0.2 (2026-06-16)
+
+**Infrastructure**
+
+- Upgrade dependencies.
+
 ## 2.0.1 (2026-05-21)
 
 **Fixes**
