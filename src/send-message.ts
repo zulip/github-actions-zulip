@@ -29,9 +29,9 @@ function allNumeric(candidate: string | string[]): boolean {
 function getMandatoryInputFromJob(key: string): Result<string, string> {
   const candidate = getInput(key, { required: true });
 
-  return candidate
-    ? new Ok(candidate)
-    : new Err(`input "${key}" must be provided and non-empty`);
+  return candidate === ""
+    ? new Err(`input "${key}" must be provided and non-empty`)
+    : new Ok(candidate);
 }
 
 function getDestinationKindInputFromJob(): Result<DestinationKind, string> {
@@ -149,7 +149,9 @@ async function postMessageFromJobInputs(): Promise<Result<string, string>> {
       return response.result === "success"
         ? new Ok(`Message successfully sent with id: ${response.id}`)
         : new Err(
-            response.code ? `${response.code}: ${response.msg}` : response.msg,
+            response.code === ""
+              ? response.msg
+              : `${response.code}: ${response.msg}`,
           );
     })
     .resolve();

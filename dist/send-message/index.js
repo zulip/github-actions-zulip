@@ -36682,9 +36682,9 @@ function allNumeric(candidate) {
 }
 function getMandatoryInputFromJob(key) {
     const candidate = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__/* .getInput */ .V4)(key, { required: true });
-    return candidate
-        ? new ts_results__WEBPACK_IMPORTED_MODULE_1__.Ok(candidate)
-        : new ts_results__WEBPACK_IMPORTED_MODULE_1__.Err(`input "${key}" must be provided and non-empty`);
+    return candidate === ""
+        ? new ts_results__WEBPACK_IMPORTED_MODULE_1__.Err(`input "${key}" must be provided and non-empty`)
+        : new ts_results__WEBPACK_IMPORTED_MODULE_1__.Ok(candidate);
 }
 function getDestinationKindInputFromJob() {
     const validValues = Object.values(DestinationKind);
@@ -36757,7 +36757,9 @@ async function postMessageFromJobInputs() {
         .flatMap((response) => {
         return response.result === "success"
             ? new ts_results__WEBPACK_IMPORTED_MODULE_1__.Ok(`Message successfully sent with id: ${response.id}`)
-            : new ts_results__WEBPACK_IMPORTED_MODULE_1__.Err(response.code ? `${response.code}: ${response.msg}` : response.msg);
+            : new ts_results__WEBPACK_IMPORTED_MODULE_1__.Err(response.code === ""
+                ? response.msg
+                : `${response.code}: ${response.msg}`);
     })
         .resolve();
 }
